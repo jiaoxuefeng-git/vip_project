@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>唯品会-商品列表</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../libs/font_icon/iconfont.css">
+</head>
+
+<body>
+    <section id="vipindex"></section>
+    <!-- ---------------------------------商品列表 start-------------------------------- -->
+    <div class="list-bg"></div>
+    <div class="list-box">
+        <div class="list-main safe">
+            <nav>
+                <ul>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">手机</a></li>
+                    <li><a href="#">更多<span class="iconfont">&#xe50a;</span></a></li>
+                </ul>
+            </nav>
+            <div class="goodsList" id="goodsList">
+                <ul>
+                    <!-- <li>
+                        <img src="../img/img (170).jpg" alt="" class="item-img">
+                        <img src="../img/viplist-top1.png" alt="" class="top-icon">
+                        <div class="price-area">
+                            <div class="price-type">
+                                <div class="price">
+                                    <span class="price-prefix">快抢价</span>
+                                    <span class="price-sale"><i class="yuan">¥</i><span>999</span></span>
+                                </div>
+                                <div class="old-price">
+                                    <del class="price-market"><i class="yuan">¥</i><span>1699</span></del>
+                                    <span class="discount">5.9折</span>
+                                </div>
+                                <div class="product-name">华为 华为畅享9S 4GB+128GB 全网通</div>
+                            </div>
+                        </div>
+                        <div class="buy-btn">立即抢购</div>
+                    </li> -->
+                </ul>
+            </div>
+            <div class="rank-load-more" id="rank-load-more"><span>加载更多</span><span
+                    class="iconfont m-icon">&#xe50a;</span></div>
+        </div>
+    </div>
+    <!-- ---------------------------------商品列表 end-------------------------------- -->
+
+
+
+    <script src="../libs/jquery-1.11.0.js"></script>
+    <script src="../js/reg.js"></script>
+    <script src="../js/common.js"></script>
+
+    <script>
+        $(function () {
+            $("#vipindex").load("index.html", function () {
+                // 首页展示效果
+                $indexLoad();
+
+                // 取得商品
+                $.get("http://jx.xuzhixiang.top/ap/api/productlist.php", {
+                    uid: localStorage.getItem("uid")
+                }).then(data => {
+                    console.log(data);
+                    data = data["data"];
+                    let str = loadData(data);
+                    $("#goodsList ul").html(str);
+
+                    // 点击跳转商品详情
+                    $(".toDetail").click(function () {
+                        let pid = $(this).data("pid");
+                        location.href = "detail.html?" + "pid=" +pid;
+                    });
+
+                    // 点击加载更多
+                    $("#rank-load-more").click(function () {
+                        $.get("http://jx.xuzhixiang.top/ap/api/productlist.php", {
+                            uid: localStorage.getItem("uid")
+                        }).then(data => {
+                            data = data["data"];
+                            let str = loadData(data);
+                            $("#goodsList ul").append(str);
+                        })
+                    })
+
+                });
+
+
+
+                function loadData(data) {
+                    let str = "";
+                    for (let i = 0; i < data.length; i++) {
+                        str += `
+                    <li class="toDetail" data-pid="${data[i].pid}">
+                        <img src="${data[i].pimg}" alt="" class="item-img">
+                        <img src="../img/viplist-top1.png" alt="" class="top-icon">
+                        <div class="price-area">
+                            <div class="price-type">
+                                <div class="price">
+                                    <span class="price-prefix">快抢价</span>
+                                    <span class="price-sale"><i class="yuan">¥</i><span>${parseInt(data[i].pprice)}</span></span>
+                                </div>
+                                <div class="old-price">
+                                    <del class="price-market"><i class="yuan">¥</i><span>${parseInt(data[i].pprice / 0.59)}</span></del>
+                                    <span class="discount">5.9折</span>
+                                </div>
+                                <div class="product-name">${data[i].pdesc}</div>
+                            </div>
+                        </div>
+                        <div class="buy-btn">立即抢购</div>
+                    </li>
+                    `;
+                    }
+                    return str;
+                }
+
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- 
+{data: Array(10), msg: "查询成功"}
+data: Array(10)
+0: {pid: "197492", pname: "唯品会商品_9", pprice: "6198.00", pimg: "../imgs/img (165).jpg", pdesc: "这是一件物美价廉的商品", …}
+1: {pid: "197491", pname: "唯品会商品_8", pprice: "3105.00", pimg: "../imgs/img (172).jpg", pdesc: "这是一件物美价廉的商品", …}
+2: {pid: "197490", pname: "唯品会商品_7", pprice: "3537.00", pimg: "../imgs/img (170).jpg", pdesc: "这是一件物美价廉的商品", …}
+3: {pid: "197489", pname: "唯品会商品_6", pprice: "4894.00", pimg: "../imgs/img (170).jpg", pdesc: "这是一件物美价廉的商品", …}
+4: {pid: "197488", pname: "唯品会商品_5", pprice: "5238.00", pimg: "../imgs/img (166).jpg", pdesc: "这是一件物美价廉的商品", …}
+5: {pid: "197487", pname: "唯品会商品_2", pprice: "4590.00", pimg: "../imgs/img (167).jpg", pdesc: "这是一件物美价廉的商品", …}
+6: {pid: "197486", pname: "唯品会商品_1", pprice: "5337.00", pimg: "../imgs/img (170).jpg", pdesc: "这是一件物美价廉的商品", …}
+7: {pid: "197485", pname: "唯品会商品_4", pprice: "1114.00", pimg: "../imgs/img (169).jpg", pdesc: "这是一件物美价廉的商品", …}
+8: {pid: "197484", pname: "唯品会商品_3", pprice: "1428.00", pimg: "../imgs/img (170).jpg", pdesc: "这是一件物美价廉的商品", …}
+9: {pid: "197483", pname: "唯品会商品_0", pprice: "5880.00", pimg: "../imgs/img (171).jpg", pdesc: "这是一件物美价廉的商品", …}
+length: 10 -->

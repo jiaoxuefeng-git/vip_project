@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  vertical-align: top;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+img {
+  /* display: block; */
+  vertical-align: middle;
+  border: 0 none;
+}
+
+.safe {
+  width: 1170px;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}

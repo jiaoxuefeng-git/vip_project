@@ -1,0 +1,156 @@
+@import "header.scss";
+
+.checkAll {
+  margin-left: 147px;
+}
+.cartMain {
+  margin: 0 auto;
+  width: 1200px;
+}
+.item-content {
+  border: {
+    width: 1px;
+    style: solid;
+    color: #ccc;
+  }
+  margin-top: 10px;
+  li {
+    display: flex;
+    padding: 10px;
+    img {
+      width: 80px;
+      height: 80px;
+    }
+    h3 {
+      font-size: 12px;
+      display: block;
+      width: 226px;
+      font-weight: normal;
+      margin-left: 10px;
+    }
+    .summary {
+      font-size: 12px;
+      display: block;
+      max-height: 50px;
+      width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: normal;
+      margin-left: 10px;
+      color: #9c9c9c;
+    }
+    .price {
+      background-color: #fff2e8;
+      margin-left: 10px;
+      height: 20px;
+      span {
+        display: inline-block;
+        color: #f40;
+      }
+      .type {
+        font-size: 14px;
+        color: #6c6c6c;
+        width: 40px;
+      }
+      .cont {
+        font-size: 14px;
+        font-family: Tahoma, Arial, Helvetica, sans-serif;
+      }
+    }
+    .button {
+      margin-left: 10px;
+      display: block;
+      cursor: pointer;
+      .minus {
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: #f40;
+        font-size: 10px;
+        line-height: 15px;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+      }
+      .plus {
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: #f40;
+        font-size: 10px;
+        line-height: 15px;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+      }
+      .num {
+        text-align: center;
+        height: 20px;
+        width: 60px;
+        margin: 0 5px;
+      }
+      #btn {
+        margin-left: 10px;
+        height: 23px;
+        width: 80px;
+        background-color: #f22d00;
+        border: none;
+        color: white;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+    .perTotalPrice {
+      background-color: #fff2e8;
+      margin-left: 10px;
+      height: 20px;
+      width: 160px;
+      span {
+        display: inline-block;
+        color: #f40;
+      }
+      .totalType {
+        font-size: 14px;
+        color: #6c6c6c;
+        width: 60px;
+      }
+      .totalCont {
+        font-size: 14px;
+        font-family: Tahoma, Arial, Helvetica, sans-serif;
+      }
+    }
+    .delBtn {
+      margin-left: 10px;
+      height: 23px;
+      width: 60px;
+      background-color: #f22d00;
+      border: none;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+}
+.totalPrice {
+  margin: 15px auto;
+  width: 1200px;
+  overflow: hidden;
+  p {
+    float: right;
+    background-color: #fff2e8;
+    height: 20px;
+    width: 160px;
+    margin-right: 86px;
+    span {
+      display: inline-block;
+      color: #f40;
+    }
+    .SetName {
+      font-size: 14px;
+      color: #6c6c6c;
+      width: 75px;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <link rel="stylesheet" href="../css/cart.css">
+    <link rel="stylesheet" href="../libs/font_icon/iconfont.css">
+
+</head>
+
+<body>
+    <input type="checkbox" id="checkAll" class="checkAll">全选
+    <div class="cartMain" id="cartMain">
+        <!-- <ul class="item-content" id="item-content">
+            <li data-id="">
+                <input type="checkbox" class="ck">
+                <img src="imgs/img01.jpg" alt="">
+                <h3>日式加厚榻榻米床垫打地铺睡垫神器可折叠家用软垫懒人床褥子1.5m</h3>
+                <p class="summary">有了它打地铺就方便了，不用再一层又一层地铺去，即不方便也怕脏！可根据亲的需要变换成床垫、沙发、桌子！棉体偏硬，经久耐用，收纳方便，可为您节省空间！</p>
+                <p class="price"><span class="type">单价</span><span class="iconfont">&#xe704;</span><span
+                        class="cont">159</span></p>
+                <p class="button"><span class="minus">-</span><input type="text" value="1" class="num"><span
+                        class="plus">+</span><input type="button" value="加入购物车" id="btn"></p>
+                <p class="perTotalPrice"><span class="totalType">总价格</span><span class="iconfont">&#xe704;</span><span
+                        class="totalCont">159000</span></p>
+                <input type="button" value="删除" class="delBtn">
+            </li>
+        </ul> -->
+    </div>
+    <div id="totalPrice" class="totalPrice">
+        <p><span class="SetName">结算价格</span><span class="iconfont">&#xe704;</span><span class="Settlement"
+                id="Settlement">0</span></p>
+    </div>
+
+    <script src="../libs/jquery-1.11.0.js"></script>
+    <script>
+        $(function () {
+            let uid = localStorage.getItem("uid");
+            $.get("http://jx.xuzhixiang.top/ap/api/cart-list.php", { id: uid }).then(data => {
+                console.log(data);
+                data = data["data"];
+                let str = loadData(data);
+                
+                $("#cartMain").html(str);
+
+                console.log(parseInt($("#cartNum").val()));
+
+
+            });
+
+
+
+            function loadData(data) {
+                let str = "";
+                for (let i = 0; i < data.length; i++) {
+                    str += `
+                        <ul class="item-content" id="item-content">
+                            <li data-id="${data[i].pid}">
+                                <input type="checkbox" class="ck">
+                                <img src="${data[i].pimg}" alt="">
+                                <h3>${data[i].pname}</h3>
+                                <p class="summary">${data[i].pdesc}</p>
+                                <p class="price"><span class="type">单价</span><span class="iconfont">&#xe704;</span><span
+                                        class="cont">${parseInt(data[i].pprice)}</span></p>
+                                <p class="button"><span class="minus">-</span><input type="text" value="1" class="num"><span
+                                        class="plus">+</span></p>
+                                <p class="perTotalPrice"><span class="totalType">总价格</span><span class="iconfont">&#xe704;</span><span
+                                        class="totalCont" id="totalCont">${parseInt(data[i].pprice)*parseInt($("input").val())}</span></p>
+                                <input type="button" value="删除" class="delBtn">
+                            </li>
+                        </ul> 
+                    `;
+                }
+                return str;
+            }
+
+
+        })
+
+
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- {data: Array(2), msg: "查询购物车成功"}
+0: {id: "41287", pid: "197512", pnum: "2", uid: "33103", pname: "唯品会商品_8", …}
+1: {id: "41293", pid: "197511", pnum: "1", uid: "33103", pname: "唯品会商品_9", …}
+
+0:
+id: "41287"
+pdesc: "这是一件物美价廉的商品"
+pid: "197512"
+pimg: "../img/goods9.jpg"
+pname: "唯品会商品_8"
+pnum: "2"
+pprice: "3176.00"
+uid: "33103" -->
