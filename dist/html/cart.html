@@ -37,7 +37,7 @@
     <script src="../libs/jquery-1.11.0.js"></script>
     <script>
         $(function () {
-            var uid = localStorage.getItem("uid");
+            let uid = localStorage.getItem("uid");
             // 查询用户购物车中的商品 
             $.get("http://jx.xuzhixiang.top/ap/api/cart-list.php", { id: uid }).then(data => {
                 console.log(data);
@@ -119,9 +119,10 @@
                         let price = pay();
                         $("#Settlement").html(price);
 
-                        if($(".item-content").length == 0) {
-                            $("#checkAll").prop("checked",false);
+                        if ($(".item-content").length == 0) {
+                            $("#checkAll").prop("checked", false);
                         }
+
                     });
                 });
 
@@ -135,6 +136,7 @@
 
                 // 单选 全选状态会根据单选选中的总数确定是否选中
                 $("li input[class=ck]").click(function () {
+                    console.log("点击了");
                     if ($("input[class=ck]:checked").length == $("li input[class=ck]").length) {
                         $("#checkAll").prop("checked", true);
                     } else {

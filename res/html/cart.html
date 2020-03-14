@@ -114,7 +114,15 @@
                         pid: pid
                     }).then(data => {
                         console.log(data);
-                        $(this).parent().remove();
+                        $(this).parent().parent().remove();
+                        // 更新结算价格
+                        let price = pay();
+                        $("#Settlement").html(price);
+
+                        if ($(".item-content").length == 0) {
+                            $("#checkAll").prop("checked", false);
+                        }
+
                     });
                 });
 
