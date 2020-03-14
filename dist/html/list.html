@@ -72,8 +72,10 @@
                 $indexLoad();
 
                 // 取得商品
-                $.get("http://jx.xuzhixiang.top/ap/api/productlist.php", {
-                    uid: localStorage.getItem("uid")
+                $.get("http://jx.xuzhixiang.top/ap/api/allproductlist.php", {
+                    uid: localStorage.getItem("uid"),
+                    pagesize: 5,
+                    pagenum: 0
                 }).then(data => {
                     console.log(data);
                     data = data["data"];
@@ -83,17 +85,28 @@
                     // 点击跳转商品详情
                     $(".toDetail").click(function () {
                         let pid = $(this).data("pid");
-                        location.href = "detail.html?" + "pid=" +pid;
+                        location.href = "detail.html?" + "pid=" + pid;
                     });
 
+
                     // 点击加载更多
+                    let count = 0;
                     $("#rank-load-more").click(function () {
-                        $.get("http://jx.xuzhixiang.top/ap/api/productlist.php", {
-                            uid: localStorage.getItem("uid")
+                        $.get("http://jx.xuzhixiang.top/ap/api/allproductlist.php", {
+                            uid: localStorage.getItem("uid"),
+                            pagesize: 5,
+                            pagenum: ++count
                         }).then(data => {
+                            console.log(data);
                             data = data["data"];
                             let str = loadData(data);
                             $("#goodsList ul").append(str);
+
+                            // 点击跳转商品详情
+                            $(".toDetail").click(function () {
+                                let pid = $(this).data("pid");
+                                location.href = "detail.html?" + "pid=" + pid;
+                            });
                         })
                     })
 

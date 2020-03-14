@@ -155,9 +155,9 @@
                             <dd class="num-msg">仅剩<span id="maxNum">${createRamdom(0, 100, false)}</span>件，抓紧时间抢购哦！</dd>
                         </dl>
                         <!-- 加入购物袋按钮 -->
-                        <div class="i-button" id="i-button">
+                        <div class="i-button">
                             <div class="button-box">
-                                <button type="submit"><span><i class="iconfont">&#xe646;</i>加入购物袋</span></button>
+                                <button type="submit" id="i-button"><span><i class="iconfont">&#xe646;</i>加入购物袋</span></button>
                             </div>
                         </div>
                     </form>
@@ -170,20 +170,19 @@
                         $("#FW-product").html(str);
 
                         // 数量按钮 -
-                        var val = Number($("#num").val());
-                        var max = Number($("#maxNum").text());
-                        console.log(max);
                         $("#minus").click(function () {
+                            let val = Number($("#num").val());
                             val--;
-                            // console.log($("#num").val());
-                            if (val <= 0) {
-                                $("#num").val(0);
+                            if (val <= 1) {
+                                $("#num").val(1);
                             } else {
                                 $("#num").val(val);
                             }
                         });
                         // 数量按钮 +
                         $("#plus").click(function () {
+                            let val = Number($("#num").val());
+                            let max = Number($("#maxNum").text());
                             val++;
                             if (val >= max) {
                                 $("#num").val(max);
@@ -192,19 +191,21 @@
                             }
                         });
 
-                        // $("#num").bind("input propertychange", function () {
-                        //     console.log("aaaaaaaa");
-                        //     if ($(this).val()) {
-                        //         console.log($(this).val());
-                        //         if (val >= max) {
-                        //             $("#num").val(max);
-                        //         } else if (val <= 0) {
-                        //             $("#num").val(0);
-                        //         } else {
-                        //             $("#num").val(val);
-                        //         }
-                        //     }
-                        // });
+                        $("#num").bind("input propertychange", function () {
+                            console.log("aaaaaaaa");
+                            let val = $(this).val();
+                            let max = Number($("#maxNum").text());
+                            if (val) {
+                                console.log(val);
+                                if (val >= max) {
+                                    $("#num").val(max);
+                                } else if (val <= 1) {
+                                    $("#num").val(1);
+                                } else {
+                                    $("#num").val(val);
+                                }
+                            }
+                        });
 
                         // 添加购物车(购物袋)
                         $("#i-button").click(function () {
@@ -218,7 +219,6 @@
                                     location.href = "cart.html";
                                 });
                         });
-
 
                     });
 
@@ -250,8 +250,6 @@
 
                     return num;
                 }
-
-
 
             });
         });

@@ -44,7 +44,7 @@ $(function () {
               console.log(data);
               if (data.code == 1) {
                 // 注册成功，跳转到登录页面
-                // location.href = "login.html";
+                location.href = "login.html";
               }
             }
           );
@@ -67,7 +67,7 @@ $(function () {
         localStorage.setItem("uid", uid);
         localStorage.setItem("token", token);
 
-        // location.href = "vipIndex.html";
+        location.href = "vipIndex.html";
 
         // 向后台添加商品 
         // for (let i = 0; i < 10; i++) {
@@ -86,11 +86,6 @@ $(function () {
       });
 
   });
-
-
-
-
-
 
 
 });

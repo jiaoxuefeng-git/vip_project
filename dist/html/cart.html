@@ -37,26 +37,122 @@
     <script src="../libs/jquery-1.11.0.js"></script>
     <script>
         $(function () {
-            let uid = localStorage.getItem("uid");
+            var uid = localStorage.getItem("uid");
+            // 查询用户购物车中的商品 
             $.get("http://jx.xuzhixiang.top/ap/api/cart-list.php", { id: uid }).then(data => {
                 console.log(data);
                 data = data["data"];
                 let str = loadData(data);
-                
+
                 $("#cartMain").html(str);
 
-                console.log(parseInt($("#cartNum").val()));
+                // 数量按钮 -
+                $(".minus").click(function () {
+                    let val = Number($(this).next().val());
+                    val--;
+                    if (val <= 1) {
+                        val = 1;
+                        $(this).next().val(val);
+                    } else {
+                        $(this).next().val(val);
+                    }
+                    // 更新单个商品的总价
+                    let price = Number($(this).parent().prev().find(".cont").html());
+                    $(this).parent().next().find(".totalCont").html(price * val);
+                    // 更新结算价格
+                    let totalPrice = pay();
+                    $("#Settlement").html(totalPrice);
+                    // 更新购物车商品 
+                    let pid = $(this).parent().parent("li").data("id");
+                    updateCart(pid, val);
+                });
+                // 数量按钮 +
+                $(".plus").click(function () {
+                    let val = Number($(this).prev().val());
+                    val++;
+                    $(this).prev().val(val);
+                    // 更新单个商品的总价
+                    let price = Number($(this).parent().prev().find(".cont").html());
+                    $(this).parent().next().find(".totalCont").html(price * val);
+                    // 更新结算价格
+                    let totalPrice = pay();
+                    $("#Settlement").html(totalPrice);
+                    // 更新购物车商品 
+                    let pid = $(this).parent().parent("li").data("id");
+                    updateCart(pid, val);
+                });
 
+                // 监听输入框
+                $(".num").change(function () {
+                    console.log("值改变");
+                    let val = $(this).val();
+                    if (val) {
+                        if (val <= 1) {
+                            val = 1;
+                            $(this).val(val);
+                        } else {
+                            $(this).val(val);
+                        }
+                    }
+                    // 更新单个商品的总价
+                    let price = Number($(this).parent().prev().find(".cont").html());
+                    $(this).parent().next().find(".totalCont").html(price * val);
+                    // 更新结算价格
+                    let totalPrice = pay();
+                    $("#Settlement").html(totalPrice);
+                    // 更新购物车商品 
+                    let pid = $(this).parent().parent("li").data("id");
+                    console.log(pid);
+                    updateCart(pid, val);
+                });
+
+                // 删除按钮
+                $(".delBtn").click(function () {
+                    let pid = $(this).parent().data("id");
+                    $.get("http://jx.xuzhixiang.top/ap/api/cart-delete.php", {
+                        uid: uid,
+                        pid: pid
+                    }).then(data => {
+                        console.log(data);
+                        $(this).parent().parent().remove();
+                        // 更新结算价格
+                        let price = pay();
+                        $("#Settlement").html(price);
+
+                        if($(".item-content").length == 0) {
+                            $("#checkAll").prop("checked",false);
+                        }
+                    });
+                });
+
+                // 全选  li里的复选框和全选复选框状态保持一致
+                $("#checkAll").click(function () {
+                    $("li input[class=ck]").prop("checked", $(this).prop("checked"));
+                    // 更新结算价格
+                    let price = pay();
+                    $("#Settlement").html(price);
+                });
+
+                // 单选 全选状态会根据单选选中的总数确定是否选中
+                $("li input[class=ck]").click(function () {
+                    if ($("input[class=ck]:checked").length == $("li input[class=ck]").length) {
+                        $("#checkAll").prop("checked", true);
+                    } else {
+                        $("#checkAll").prop("checked", false);
+                    }
+                    // 更新结算价格
+                    let price = pay();
+                    $("#Settlement").html(price);
+                });
 
             });
 
-
-
+            // 加载购物车列表
             function loadData(data) {
                 let str = "";
                 for (let i = 0; i < data.length; i++) {
                     str += `
-                        <ul class="item-content" id="item-content">
+                        <ul class="item-content">
                             <li data-id="${data[i].pid}">
                                 <input type="checkbox" class="ck">
                                 <img src="${data[i].pimg}" alt="">
@@ -64,10 +160,10 @@
                                 <p class="summary">${data[i].pdesc}</p>
                                 <p class="price"><span class="type">单价</span><span class="iconfont">&#xe704;</span><span
                                         class="cont">${parseInt(data[i].pprice)}</span></p>
-                                <p class="button"><span class="minus">-</span><input type="text" value="1" class="num"><span
+                                <p class="button"><span class="minus">-</span><input type="text" value="${data[i].pnum}" class="num"><span
                                         class="plus">+</span></p>
                                 <p class="perTotalPrice"><span class="totalType">总价格</span><span class="iconfont">&#xe704;</span><span
-                                        class="totalCont" id="totalCont">${parseInt(data[i].pprice)*parseInt($("input").val())}</span></p>
+                                        class="totalCont">${parseInt(data[i].pprice) * data[i].pnum}</span></p>
                                 <input type="button" value="删除" class="delBtn">
                             </li>
                         </ul> 
@@ -76,10 +172,28 @@
                 return str;
             }
 
+            // 更新购物车中商品数量
+            function updateCart(pid, pnum) {
+                $.get("http://jx.xuzhixiang.top/ap/api/cart-update-num.php", {
+                    uid: uid,
+                    pid: pid,
+                    pnum: pnum
+                }).then(data => {
+                    console.log(data);
+                });
+            }
+
+            // 计算结算价格
+            function pay() {
+                let price = 0;
+                $("li").has("input[class=ck]:checked").each(function () {
+                    price += Number($(this).find(".totalCont").text());
+                });
+                return price;
+            }
+
 
         })
-
-
     </script>
 
 </body>

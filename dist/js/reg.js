@@ -41,8 +41,9 @@ $(function () {
         }, function (data) {
           console.log(data);
 
-          if (data.code == 1) {// 注册成功，跳转到登录页面
-            // location.href = "login.html";
+          if (data.code == 1) {
+            // 注册成功，跳转到登录页面
+            location.href = "login.html";
           }
         });
       } else {
@@ -62,8 +63,8 @@ $(function () {
       var uid = data["data"]["id"];
       var token = data["data"]["token"];
       localStorage.setItem("uid", uid);
-      localStorage.setItem("token", token); // location.href = "vipIndex.html";
-      // 向后台添加商品 
+      localStorage.setItem("token", token);
+      location.href = "vipIndex.html"; // 向后台添加商品 
       // for (let i = 0; i < 10; i++) {
       //   $.post("http://jx.xuzhixiang.top/ap/api/goods/goods-add.php",
       //     {
